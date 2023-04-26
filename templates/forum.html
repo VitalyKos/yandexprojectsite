@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+{% set page = request.args.get("page", 1) | int %}
+<table class="table table-bordered">
+    <thead>
+    <tr class="table-primary">
+        <th scope="col" colspan="2">{{forum.title}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for message in messages %}
+    <tr class="table-info">
+        <td class="text-center" scope="col" style="width:10%;">{{message.author | safe}}</td>
+        <td scope="col" style="width:90%"><span style="float: left">{{message.relative_format_time()}}</span><span style="float: right">Сообщение #{{ 1 if loop.first else (page - 1) * 20 + loop.index }}</span></td>
+    </tr>
+    <tr class="table-light">
+        <td class="text-center align-middle" scope="col" style="width:10%">
+            <img src="{{url_for('static', filename='img/' + message.author.icon)}}" style="width: 60%;height: auto" border="1">
+            <p style="font-size: smaller"><br>Сообщений: {{message.author.messages_count}}<br>Регистрация: {{message.author.registered_at.strftime("%d.%m.%y")}}
+                {% if message.author.city %}
+                <br>Город: {{message.author.city}}
+                {% endif %}
+            </p>
+        </td>
+        <td scope="col" style="width:90%">
+            <p>{{message.markdown_text | safe}}</p>
+            {% if message.author.status %}
+            <p style="vertical-align: bottom;font-size: smaller;font-style: italic">
+                ----------------------------------------------------------<br>
+                {{message.author.status}}
+            </p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr class="table-primary">
+        <td scope="col" colspan="2"></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if current_user.is_authenticated %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {% for field in form %}
+    {% if loop.index < 2 %}
+    {{ field.label() }} <br>
+    {{ field(class="form-control") }} <br>
+    {% for error in field.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endif %}
+<a class="btn btn-outline-primary" href="/forum/{{forum.id}}?page={{ [1, page - 5] | max }}"><<<</a>
+<a class="btn btn-outline-primary" href="/forum/{{forum.id}}?page={{ [1, page - 1] | max }}"><</a>
+Страница {{page}} из {{total_pages}}
+<a class="btn btn-outline-primary" href="/forum/{{forum.id}}?page={{ [total_pages, page + 1] | min }}">></a>
+<a class="btn btn-outline-primary" href="/forum/{{forum.id}}?page={{ [total_pages, page + 5] | min }}">>>></a>
+{% endblock %}
+

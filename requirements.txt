@@ -1,0 +1,7 @@
+flask
+sqlalchemy
+sqlalchemy-serializer
+flask-login
+flask-wtf
+markdown
+pygments

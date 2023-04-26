@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Новый форум</h2>
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {% for field in form %}
+    {% if loop.index < 6 %}
+    {{ field.label() }} <br>
+    {{ field(class="form-control") }} <br>
+    {% for error in field.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}

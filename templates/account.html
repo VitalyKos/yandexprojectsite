@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Пользователь {{user.nickname}}</h2>
+<img src="{{url_for('static', filename='img/' + user.icon)}}" style="width: 250px;height:250px" border="1">
+<ul class="list-group">
+    <li class="list-group-item">Администратор? {% if user.administrator %}Да{% else %}Нет{% endif %}</li>
+    <li class="list-group-item">Почта: {{user.email}}</li>
+    <li class="list-group-item">Родился: {{user.born_at}}</li>
+    <li class="list-group-item">Зарегистрировался: {{user.registered_at.date()}}</li>
+    <li class="list-group-item">Статус: {{user.status or "Отсутствует"}}</li>
+</ul>
+{% endblock %}
