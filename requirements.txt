@@ -1,7 +1,7 @@
-flask
-sqlalchemy
-sqlalchemy-serializer
-flask-login
-flask-wtf
-markdown
-pygments
+flask==2.3.2
+sqlalchemy==2.0.12
+sqlalchemy-serializer==1.4.1
+flask-login==0.6.2
+flask-wtf==1.1.1
+markdown==3.4.3
+pygments==2.15.1
